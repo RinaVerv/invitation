@@ -2,7 +2,6 @@ import './App.css';
 import { Hero } from './components/Hero';
 import Story from './components/Story';
 import EventDetails from './components/EventDetails';
-import RSVP from './components/RSVP';
 import Location from './components/Location';
 import { Toaster } from '@/components/ui/sonner';
 import CountdownTimer from './components/CountdownTimer';
@@ -20,7 +19,6 @@ const App: React.FC = () => {
         <Story />
         <DividerImage imgSrc='/divider-2.jpg' cssClass='object-[10%_20%]' />
         <EventDetails />
-        {/* <RSVP /> */}
         <Location />
       </main>
       <Toaster />
