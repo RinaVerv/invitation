@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const WEDDING_DATE = new Date('August 1, 2025 16:00:00').getTime();
 
@@ -17,11 +18,18 @@ const pluralizeRussian = (count: number, singular: string, few: string, many: st
 };
 
 const CountdownTimer: React.FC = () => {
+  const now = new Date().getTime();
+  const distance = WEDDING_DATE - now;
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
   const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
+    days,
+    hours,
+    minutes,
+    seconds,
   });
 
   // Set the wedding date - December 25, 2023
@@ -52,7 +60,7 @@ const CountdownTimer: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [WEDDING_DATE]);
 
   const timeUnits = [
     { label: pluralizeRussian(timeLeft.days, 'день', 'дня', 'дней'), value: timeLeft.days },
@@ -68,28 +76,35 @@ const CountdownTimer: React.FC = () => {
   ];
 
   return (
-    <section id='countdown' className='py-20'>
+    <section
+      id='countdown'
+      className='py-20 bg-gradient-to-tr from-primary-50 via-white to-primary-40'
+    >
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
-        <h2 className='font-vibe text-2xl md:text-5xl text-accent-dark mb-4'>
+        <h2 className='font-vibe text-5xl text-accent-dark mb-4'>
           До главного события года осталось:
         </h2>
         <div className='w-48 h-0.5 mx-auto mb-10 bg-gray-200' />
-
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto'>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, delay: 0.6 }}
+          className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto'
+        >
           {timeUnits.map((unit) => (
             <div
               key={unit.label}
               className='bg-white p-4 md:p-6 rounded-lg shadow-sm border border-surface-200'
             >
-              <div className='text-3xl md:text-4xl lg:text-5xl text-accent-dark mb-2'>
+              <div className='font-main text-3xl md:text-4xl lg:text-5xl text-accent-dark mb-2'>
                 {unit.value.toString().padStart(2, '0')}
               </div>
-              <div className='text-primary-500 uppercase text-xs md:text-sm tracking-wider'>
+              <div className='font-main text-primary-500 uppercase text-xs md:text-lg tracking-wider'>
                 {unit.label}
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -7,6 +7,9 @@ import { Toaster } from '@/components/ui/sonner';
 import CountdownTimer from './components/CountdownTimer';
 import Invitation from './components/Invitation';
 import DividerImage from './components/DividerImage';
+import DressCode from './components/DressCode';
+import WillYouAttend from './components/WillYouAttend';
+import Details from './components/Details';
 
 const App: React.FC = () => {
   return (
@@ -19,6 +22,11 @@ const App: React.FC = () => {
         <Story />
         <DividerImage imgSrc='/divider-2.jpg' cssClass='object-[10%_20%]' />
         <EventDetails />
+        <DividerImage imgSrc='/divider-1.jpg' />
+        <DressCode />
+        <DividerImage imgSrc='/divider-2.jpg' cssClass='object-[10%_20%]' />
+        <Details />
+        <WillYouAttend />
         <Location />
       </main>
       <Toaster />

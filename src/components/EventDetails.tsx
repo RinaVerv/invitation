@@ -68,7 +68,7 @@ export default function EventDetails() {
           </h2>
           <div className='w-48 h-0.5 mx-auto bg-gray-200' />
         </motion.div>
-        <div className='flex flex-col justify-center items-center'>
+        <div className='flex flex-col items-center w-full'>
           {events.map((event, index) => (
             <motion.div
               key={event.title}
@@ -76,10 +76,12 @@ export default function EventDetails() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
-              className='flex flex-row'
+              className='flex flex-row w-full gap-4 md:gap-10 mb-6'
             >
-              <p className='font-main text-zinc-500 text-4xl text-left mb-6'>{event.time}</p>
-              <h3 className='font-main text-zinc-800 text-4xl ml-6 font-100'>{`${event.title}`}</h3>
+              <p className='font-main text-zinc-500 text-2xl md:text-4xl text-right  flex-1/2 '>
+                {event.time}
+              </p>
+              <h3 className='font-main text-zinc-800 text-2xl md:text-4xl font-100  text-left flex-1/2'>{`${event.title}`}</h3>
             </motion.div>
           ))}
         </div>

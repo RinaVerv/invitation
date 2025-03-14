@@ -153,6 +153,7 @@ h1 {
   }
   body {
     @apply bg-background text-foreground;
+    scroll-behavior: smooth;
   }
 }
 

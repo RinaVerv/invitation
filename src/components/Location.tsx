@@ -29,7 +29,7 @@ export default function Location() {
           className='text-center mb-16'
         >
           <h2 className='text-5xl font-vibe text-primary-800 mb-2'>Место проведения</h2>
-          <div className='w-24 h-0.5 mx-auto bg-gray-200' />
+          <div className='w-48 h-0.5 mx-auto bg-gray-200' />
         </motion.div>
 
         <div className='grid gap-8 md:grid-cols-2'>
