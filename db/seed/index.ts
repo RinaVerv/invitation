@@ -13,7 +13,11 @@ const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
  * Test users to create
  */
 const testUsers = [
-
+  {
+    username: 'sasha',
+    emailAddress: ['sasha222@gmail.com'],
+    password: 'Ac$222haUZUp7sAFy',
+  },
 ];
 
 /**
