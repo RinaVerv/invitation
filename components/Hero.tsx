@@ -37,7 +37,7 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <section className='relative h-[70vh] flex items-center justify-center overflow-hidden bg-surface-50/95'>
+    <section className='relative h-[70vh] md:h-[80vh] flex items-center justify-center overflow-hidden bg-surface-50/95'>
       <motion.div
         initial={{ scale: 1.05, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -86,7 +86,7 @@ export const Hero: React.FC = () => {
 
           <motion.p
             variants={titleVariants}
-            className='text-[clamp(2.5rem,28vw,7.5rem)] md:text-[180px] leading-[0.8] font-marianna text-white tracking-tight m-0'
+            className='text-[clamp(2.5rem,28vw,7.5rem)] md:text-[160px] leading-[0.8] font-marianna text-white tracking-tight m-0'
           >
             Александр<br />& <br />Марина
           </motion.p>
