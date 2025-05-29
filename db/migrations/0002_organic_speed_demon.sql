@@ -1,0 +1,1 @@
+ALTER TABLE "rsvp" ADD COLUMN "user_id" text NOT NULL;

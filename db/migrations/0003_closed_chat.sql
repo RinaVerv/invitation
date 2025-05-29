@@ -1,0 +1,1 @@
+ALTER TABLE "rsvp" ALTER COLUMN "user_id" SET DEFAULT 'legacy';

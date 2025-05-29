@@ -1,0 +1,1 @@
+ALTER TABLE "rsvp" RENAME COLUMN "menu_preferences" TO "menu_preference";
