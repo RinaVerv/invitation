@@ -13,7 +13,7 @@ interface Event {
 const events: Event[] = [
   {
     title: 'Сбор гостей',
-    time: '14:00 - 15:30',
+    time: '15:30',
     location: 'пер. Западный',
     address: '',
     description: '',
@@ -25,7 +25,7 @@ const events: Event[] = [
   },
   {
     title: 'Торжественная церемония',
-    time: '16:00 - 17:00',
+    time: '16:00',
     location: '',
     address: '',
     description: '',
