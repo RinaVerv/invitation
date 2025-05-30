@@ -75,7 +75,7 @@ const Organizer = () => {
             <a href="tel:+79080762902">Позвонить</a>
           </Button>
         </motion.div>
-
+       
         {/* Social icons row */}
        {/*  <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -98,6 +98,16 @@ const Organizer = () => {
           </a>
         </motion.div> */}
       </div>
+
+       <div className="flex items-center flex-col absolute left-6 bottom-6 md:left-6 md:bottom-6 z-10">
+          <p className="font-cormorant-sc text-xs font-cormorant-sc font-100 text-white mb-[-15px]">Разработка сайта: </p>
+          <a href="https://t.me/VervinskyS" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="group">
+          <svg width="46" height="50" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="43" className="font-cormorant-sc text-4xl font-bold text-white fill-white">S</text>
+            <text x="18" y="43" className="font-cormorant-sc text-4xl font-bold text-white fill-white">V</text>
+          </svg>
+          </a>
+        </div>
     </section>
   );
 };
