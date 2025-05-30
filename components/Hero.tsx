@@ -86,7 +86,7 @@ export const Hero: React.FC = () => {
 
           <motion.p
             variants={titleVariants}
-            className='text-[clamp(2.5rem,28vw,7.5rem)] md:text-[160px] leading-[0.8] font-marianna text-white tracking-tight m-0'
+            className='text-[clamp(2.5rem,28vw,7.5rem)] md:text-[162px] leading-[0.8] font-marianna text-white tracking-tight m-0'
           >
             Александр<br />& <br />Марина
           </motion.p>

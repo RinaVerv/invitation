@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { PhoneIcon, CameraIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import { Button } from './ui/button';
 
 const Organizer = () => {
@@ -78,29 +77,26 @@ const Organizer = () => {
         </motion.div>
 
         {/* Social icons row */}
-        <motion.div
+       {/*  <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.05 }}
           className="flex justify-center gap-8 mt-2 text-white"
         >
-          {/* Phone icon (call) */}
           <a href="tel:+79080762902" target="_blank" rel="noopener noreferrer" aria-label="Позвонить" className="group">
             <span className="sr-only">Позвонить</span>
             <PhoneIcon className="w-14 h-14 p-3 rounded-full border-2 border-stone-800 bg-stone-800 text-white group-hover:bg-transparent group-hover:text-stone-800 transition duration-300 ease-in-out" />
           </a>
-          {/* Instagram icon (replace with actual link) */}
           <a href="https://instagram.com/your_organizer" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="group">
             <span className="sr-only">Instagram</span>
             <CameraIcon className="w-14 h-14 p-3 rounded-full border-2 border-stone-800 bg-stone-800 text-white group-hover:bg-transparent group-hover:text-stone-800 transition duration-300 ease-in-out" />
           </a>
-          {/* Telegram icon (replace with actual link) */}
           <a href="https://t.me/your_organizer" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="group">
             <span className="sr-only">Telegram</span>
             <PaperAirplaneIcon className="w-14 h-14 p-3 rounded-full border-2 border-stone-800 bg-stone-800 text-white group-hover:bg-transparent group-hover:text-stone-800 transition duration-300 ease-in-out rotate-12" />
           </a>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

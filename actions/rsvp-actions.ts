@@ -24,11 +24,10 @@ export async function getRSVPs() {
  * @param name - The full name of the person
  * @param attendance - Whether the person will attend
  * @param guests - Number of guests
- * @param menu_preference - Menu preference
  * @param alcohol_preferences - Alcohol preferences
  * @returns The newly created prompt
  */
-export async function createRSVP({ name, attendance, guests, menu_preference, alcohol_preferences }: { name: string; attendance: string; guests: number; menu_preference: string; alcohol_preferences: string[] }) {
+export async function createRSVP({ name, attendance, guests, alcohol_preferences }: { name: string; attendance: string; guests: number; alcohol_preferences: string[] }) {
   try {
     const userId = await requireUserId();
 
@@ -40,7 +39,6 @@ export async function createRSVP({ name, attendance, guests, menu_preference, al
         user_id: userId,
         attendance,
         guests,
-        menu_preference,
         alcohol_preferences
       })
       .returning();
@@ -58,11 +56,10 @@ export async function createRSVP({ name, attendance, guests, menu_preference, al
  * @param name - The new full name
  * @param attendance - The new attendance status
  * @param guests - The new number of guests
- * @param menu_preference - The new menu preference
  * @param alcohol_preferences - The new alcohol preferences
  * @returns The updated rsvp
  */
-export async function updateRSVP({ id, name, attendance, guests, menu_preference, alcohol_preferences }: { id: number; name: string; attendance: string; guests: number; menu_preference: string; alcohol_preferences: string[] }) {
+export async function updateRSVP({ id, name, attendance, guests, alcohol_preferences }: { id: number; name: string; attendance: string; guests: number; alcohol_preferences: string[] }) {
   try {
     const userId = await requireUserId();
 
@@ -73,7 +70,6 @@ export async function updateRSVP({ id, name, attendance, guests, menu_preference
         name,
         attendance,
         guests,
-        menu_preference,
         alcohol_preferences
       })
       .where(and(eq(rsvp.id, id), eq(rsvp.user_id, userId)))

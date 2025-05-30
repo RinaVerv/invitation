@@ -45,11 +45,6 @@ const successVariants = {
   },
 };
 
-const menuOptions = [
-  "Мясо",
-  "Рыба",
-  "Веган",
-];
 
 const alcoholOptions = [
   "Шампанское",
@@ -102,7 +97,6 @@ export function RSVPForm() {
         name: data.name,
         attendance: data.attendance,
         guests: parseInt(data.guests),
-        menu_preference: data.menuPreference || "",
         alcohol_preferences: data.alcoholPreferences || [],
       });
       setIsSuccess(true);
@@ -276,24 +270,6 @@ export function RSVPForm() {
                 {errors.guests && (
                   <p className="text-sm text-red-500 font-cormorant-sc">{errors.guests.message}</p>
                 )}
-              </motion.div>
-
-              {/* Menu Preferences Radio Buttons */}
-              <motion.div variants={itemVariants} className="space-y-2">
-                <Label className="font-cormorant-sc text-zinc-800 text-[16px] md:text-[20px]">Предпочтения по меню:</Label>
-                <div className="flex flex-col gap-3">
-                  {menuOptions.map((option) => (
-                    <label key={option} className="flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer hover:bg-zinc-50 transition">
-                      <input
-                        type="radio"
-                        {...register("menuPreference")}
-                        value={option}
-                        className="h-6 w-6 accent-zinc-800"
-                      />
-                      <span className="font-cormorant-sc text-[16px] md:text-[20px]">{option}</span>
-                    </label>
-                  ))}
-                </div>
               </motion.div>
 
               {/* Alcohol Preferences Checkboxes */}

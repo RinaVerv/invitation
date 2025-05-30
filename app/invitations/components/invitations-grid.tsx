@@ -10,26 +10,15 @@ import { motion } from "framer-motion";
 import { Edit2, Loader2, Plus, Trash2, ArrowUpDown } from "lucide-react";
 import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { SelectRsvp } from "@/db/schema/rsvp-schema";
+import { SelectRsvp, InsertRsvp } from "@/db/schema/rsvp-schema";
 
-// Type for a RSVP from the database
-interface DBRsvp {
-  id: number;
-  name: string;
-  attendance: string;
-  guests: number;
-  menu_preference: string | null;
-  alcohol_preferences: string[] | null;
-  created_at: Date;
-  updated_at: Date;
-}
+
 
 // Type for RSVP form data
 interface RSVPFormData {
   name: string;
   attendance: string;
   guests: number;
-  menu_preference: string;
   alcohol_preferences: string[];
 }
 
@@ -43,7 +32,7 @@ type SortDirection = 'asc' | 'desc';
 
 export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
   // State for RSVPs and UI
-  const [rsvps, setRsvps] = useState<DBRsvp[]>(initialPrompts);
+  const [rsvps, setRsvps] = useState<InsertRsvp[]>(initialPrompts);
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -60,7 +49,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
     name: "",
     attendance: "",
     guests: 1,
-    menu_preference: "",
     alcohol_preferences: []
   });
 
@@ -92,7 +80,7 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
       return (
         <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
           <p className="font-medium">{label}</p>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
+          <p className="text-sm text-gray-600 dark:text-gray-300 font-cormorant-sc font-bold">
             {payload[0].value} гостей
           </p>
         </div>
@@ -108,15 +96,14 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
   };
 
   // Function to start editing a RSVP
-  const startEditing = (rsvp: DBRsvp) => {
+  const startEditing = (rsvp: InsertRsvp) => {
     setFormData({
       name: rsvp.name,
       attendance: rsvp.attendance,
       guests: rsvp.guests,
-      menu_preference: rsvp.menu_preference || "",
       alcohol_preferences: rsvp.alcohol_preferences || []
     });
-    setEditingId(rsvp.id);
+    setEditingId(rsvp.id || null);
     setError(null);
   };
 
@@ -142,7 +129,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
         name: "",
         attendance: "",
         guests: 1,
-        menu_preference: "",
         alcohol_preferences: []
       });
     } catch (err) {
@@ -202,22 +188,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
            attendance.toLowerCase().includes('приду');
   };
 
-  // Function to prepare data for menu preferences chart
-  const getMenuPreferencesData = () => {
-    const menuData = rsvps
-      .filter(rsvp => isAttendanceConfirmed(rsvp.attendance))
-      .reduce((acc, rsvp) => {
-        const preference = rsvp.menu_preference || 'Не указано';
-        acc[preference] = (acc[preference] || 0) + rsvp.guests;
-        return acc;
-      }, {} as Record<string, number>);
-
-    return Object.entries(menuData).map(([name, value]) => ({
-      name,
-      value
-    }));
-  };
-
   // Function to prepare data for alcohol preferences chart
   const getAlcoholPreferencesData = () => {
     const alcoholData = rsvps
@@ -249,13 +219,15 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
       {/* Create RSVP button and statistics */}
       <div className="mb-6 flex justify-between items-center">
         <div className="space-y-2">
-          <div className="text-lg font-medium font-cormorant-sc">
-            Всего гостей: {rsvps.reduce((sum, rsvp) => sum + rsvp.guests, 0)}
+          <div className="text-2xl font-medium font-cormorant-sc">
+            Всего гостей: <span className="font-bold">{rsvps.reduce((sum, rsvp) => sum + rsvp.guests, 0)}</span>
           </div>
-          <div className="text-sm text-gray-600 dark:text-gray-300 font-cormorant-sc">
-            Подтвердили: {rsvps
+          <div className="text-lg text-gray-600 dark:text-gray-300 font-cormorant-sc">
+            Подтвердили: <span className="font-bold">
+            {rsvps
               .filter(rsvp => isAttendanceConfirmed(rsvp.attendance))
               .reduce((sum, rsvp) => sum + rsvp.guests, 0)} / {rsvps.reduce((sum, rsvp) => sum + rsvp.guests, 0)} гостей
+            </span>
           </div>
         </div>
         <Button
@@ -265,7 +237,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
               name: "",
               attendance: "",
               guests: 1,
-              menu_preference: "",
               alcohol_preferences: []
             });
           }}
@@ -278,46 +249,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {/* Menu Preferences Chart */}
-        <Card className="overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
-            <CardTitle className="text-purple-700 dark:text-purple-300 font-cormorant-sc">Предпочтения в меню</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={getMenuPreferencesData()}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                >
-                  <defs>
-                    <linearGradient id="menuGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={chartColors.menu.primary} stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor={chartColors.menu.secondary} stopOpacity={0.8}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis
-                    dataKey="name"
-                    tick={{ fill: '#4a5568', fontFamily: 'var(--font-cormorant-sc)' }}
-                    axisLine={{ stroke: '#e2e8f0' }}
-                  />
-                  <YAxis
-                    tick={{ fill: '#4a5568', fontFamily: 'var(--font-cormorant-sc)' }}
-                    axisLine={{ stroke: '#e2e8f0' }}
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Bar
-                    dataKey="value"
-                    fill="url(#menuGradient)"
-                    radius={[4, 4, 0, 0]}
-                    maxBarSize={60}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Alcohol Preferences Chart */}
         <Card className="overflow-hidden">
@@ -372,7 +303,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
               name: "",
               attendance: "",
               guests: 1,
-              menu_preference: "",
               alcohol_preferences: []
             });
           }
@@ -434,7 +364,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
                     name: "",
                     attendance: "",
                     guests: 1,
-                    menu_preference: "",
                     alcohol_preferences: []
                   });
                 }}
@@ -526,7 +455,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
                   <ArrowUpDown className="w-4 h-4" />
                 </div>
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 font-cormorant-sc">Предпочтения в меню</th>
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 font-cormorant-sc">Предпочтения в алкоголе</th>
               <th className="px-4 py-3 text-right text-sm font-medium text-gray-700 dark:text-gray-300 font-cormorant-sc">Действия</th>
             </tr>
@@ -542,7 +470,6 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
                 <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-cormorant-sc">{rsvp.name}</td>
                 <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 font-cormorant-sc">{rsvp.attendance}</td>
                 <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 font-cormorant-sc">{rsvp.guests}</td>
-                <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 font-cormorant-sc">{rsvp.menu_preference || "Нет"}</td>
                 <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 font-cormorant-sc">
                   {rsvp.alcohol_preferences?.join(", ") || "Нет"}
                 </td>
@@ -559,7 +486,7 @@ export const RSVPGrid = ({ initialPrompts }: RSVPGridProps) => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => setDeletingId(rsvp.id)}
+                      onClick={() => setDeletingId(rsvp.id || null)}
                       title="Удалить ответ"
                     >
                       <Trash2 className="w-4 h-4" />

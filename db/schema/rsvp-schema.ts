@@ -12,12 +12,11 @@ import { pgTable, serial, text, integer, timestamp } from "drizzle-orm/pg-core";
  * - updated_at: Timestamp of when the RSVP was last updated
  */
 export const rsvp = pgTable("rsvp", {
-  id: serial("id").primaryKey(),
+  id: serial("id").primaryKey().notNull(),
   user_id: text("user_id").notNull(),
   name: text("name").notNull(),
   attendance: text("attendance").notNull(),
   guests: integer("guests").notNull(),
-  menu_preference: text("menu_preference"),
   alcohol_preferences: text("alcohol_preferences").array(),
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
