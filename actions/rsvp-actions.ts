@@ -2,8 +2,16 @@
 
 import { db } from "@/db";
 import { rsvp } from "@/db/schema/rsvp-schema";
-import { and, desc, eq } from "drizzle-orm";
-import { requireUserId } from "./auth-actions";
+import { desc, eq } from "drizzle-orm";
+
+function generateUserId(length = 8) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let userId = '';
+  for (let i = 0; i < length; i++) {
+    userId += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return userId;
+}
 
 /**
  * Fetches all prompts from the database
@@ -29,14 +37,13 @@ export async function getRSVPs() {
  */
 export async function createRSVP({ name, attendance, guests, alcohol_preferences }: { name: string; attendance: string; guests: number; alcohol_preferences: string[] }) {
   try {
-    const userId = await requireUserId();
 
     // Insert the new prompt
     const [newPrompt] = await db
       .insert(rsvp)
       .values({
         name,
-        user_id: userId,
+        user_id: generateUserId(),
         attendance,
         guests,
         alcohol_preferences
@@ -61,7 +68,6 @@ export async function createRSVP({ name, attendance, guests, alcohol_preferences
  */
 export async function updateRSVP({ id, name, attendance, guests, alcohol_preferences }: { id: number; name: string; attendance: string; guests: number; alcohol_preferences: string[] }) {
   try {
-    const userId = await requireUserId();
 
     // Update the prompt
     const [updatedRSVP] = await db
@@ -72,7 +78,7 @@ export async function updateRSVP({ id, name, attendance, guests, alcohol_prefere
         guests,
         alcohol_preferences
       })
-      .where(and(eq(rsvp.id, id), eq(rsvp.user_id, userId)))
+      .where(eq(rsvp.id, id))
       .returning();
 
     if (!updatedRSVP) {
@@ -93,10 +99,9 @@ export async function updateRSVP({ id, name, attendance, guests, alcohol_prefere
  */
 export async function deleteRSVP(id: number) {
   try {
-    const userId = await requireUserId();
 
     // Delete the prompt
-    const [deletedRSVP] = await db.delete(rsvp).where(and(eq(rsvp.id, id), eq(rsvp.user_id, userId))).returning();
+    const [deletedRSVP] = await db.delete(rsvp).where(eq(rsvp.id, id)).returning();
 
     if (!deletedRSVP) {
       throw new Error("Prompt not found");
