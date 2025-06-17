@@ -125,7 +125,7 @@ export default function Location() {
             <Image
               loading='lazy'
               className='absolute inset-0 w-full h-full object-cover object-left-bottom blur-[2px]'
-              src='/club.png'
+              src='/club.jpg'
               alt="Шахтёрский клуб ЮГК"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

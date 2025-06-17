@@ -11,8 +11,7 @@ import DressCode from '../components/DressCode';
 import Details from '../components/Details';
 import Organizer from '../components/Organizer';
 import { RSVPForm } from '@/components/RSVPForm';
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
+
 
 export default function Home() {
 
@@ -35,8 +34,6 @@ export default function Home() {
         <Location />
         <Organizer />
       </main>
-      <SpeedInsights />
-      <Analytics/>
     </div>
   );
 }

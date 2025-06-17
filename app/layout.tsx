@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Advent_Pro, Great_Vibes, Cormorant_SC } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 import localFont from 'next/font/local';
 
 const mariannaFont = localFont({
@@ -60,6 +61,8 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} ${adventPro.variable} ${greatVibes.variable} ${mariannaFont.variable} ${cormorantSC.variable} antialiased`}
         >
           {children}
+          <SpeedInsights />
+          <Analytics/>
         </body>
       </html>
     </ClerkProvider>
