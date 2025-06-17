@@ -32,6 +32,14 @@ const CountdownTimer: React.FC = () => {
     seconds,
   });
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+
+
   // Set the wedding date - December 25, 2023
 
   useEffect(() => {
@@ -60,7 +68,7 @@ const CountdownTimer: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [WEDDING_DATE]);
+  }, []);
 
   const timeUnits = [
     { label: pluralizeRussian(timeLeft.days, 'день', 'дня', 'дней'), value: timeLeft.days },
@@ -74,6 +82,10 @@ const CountdownTimer: React.FC = () => {
       value: timeLeft.seconds,
     },
   ];
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <section
